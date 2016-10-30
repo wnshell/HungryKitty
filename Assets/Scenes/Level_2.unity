@@ -235,19 +235,19 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4000012307837466, guid: efd3200618d3640c4b512ab4e7591f49, type: 2}
       propertyPath: m_LocalRotation.x
-      value: -0.7071068
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4000012307837466, guid: efd3200618d3640c4b512ab4e7591f49, type: 2}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4000012307837466, guid: efd3200618d3640c4b512ab4e7591f49, type: 2}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4000012307837466, guid: efd3200618d3640c4b512ab4e7591f49, type: 2}
       propertyPath: m_LocalRotation.w
-      value: 0.7071068
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4000012307837466, guid: efd3200618d3640c4b512ab4e7591f49, type: 2}
       propertyPath: m_RootOrder
@@ -2398,7 +2398,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00d41c188420e413fb238b969a8e76f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nextLevel: Level_3
 --- !u!1001 &2128791696
 Prefab:
   m_ObjectHideFlags: 0

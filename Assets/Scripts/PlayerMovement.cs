@@ -23,6 +23,8 @@ public class PlayerMovement : MonoBehaviour {
 	public float hopHeight = 1.25f;
 	private bool hopping = false;
 
+	private GameObject lockedMouse;
+
 	public Text nipCount;
 
 	public bool catnipDown;
@@ -59,7 +61,7 @@ public class PlayerMovement : MonoBehaviour {
 			} else if (mag > maxspeed && ms == moveState.MOVING) {
 				mag = maxspeed;
 			}
-			if (ms == moveState.MOVING) {
+			if (ms == moveState.MOVING && lockedMouse == null) {
 				GetComponent<Rigidbody> ().transform.eulerAngles = new Vector3 (0, Mathf.Atan2 ((target.x - transform.position.x), (target.z - transform.position.z)) * Mathf.Rad2Deg, 0);
 				transform.position = Vector3.MoveTowards (transform.position, target, speed * Time.deltaTime * mag);
 			}
@@ -73,20 +75,27 @@ public class PlayerMovement : MonoBehaviour {
 			GameObject go;
 			Vector3 target2 = Camera.main.ScreenToWorldPoint (Input.mousePosition);
 			target2.y = 3.0f;
-			go = Instantiate (catnip, target2, Quaternion.Euler (0, 0, 0)) as GameObject;
+			go = Instantiate (catnip, target2, Quaternion.Euler (-90, 0, 0)) as GameObject;
 			catnipDown = true;
 		}
-		//catnip or badmouse detection
-		Collider[] colliders = Physics.OverlapSphere (transform.position, detectionradius);
-		foreach (Collider hit in colliders) {
-			Vector3 diffcoll = hit.transform.position - transform.position;
-			float magcoll = diffcoll.magnitude;
-			if (hit.gameObject.tag == "BadMouse") {
-				ms = moveState.LOCKED;
-				StartCoroutine (lockOnToMouse (hit.gameObject.transform.position, hit.gameObject));
-			} else if (hit.gameObject.tag == "Catnip" && ms != moveState.LOCKED && magcoll <= 35.0f) {
-				ms = moveState.LEAPING;
-				StartCoroutine (leapToCatnip (hit.gameObject.transform.position, 0.6f));
+		if (ms == moveState.LOCKED && lockedMouse != null) {
+			StartCoroutine (lockOnToMouse (lockedMouse.transform.position, lockedMouse));
+		} else {
+			//catnip or badmouse detection
+			Collider[] colliders = Physics.OverlapSphere (transform.position, detectionradius);
+			foreach (Collider hit in colliders) {
+				Vector3 diffcoll = hit.transform.position - transform.position;
+				float magcoll = diffcoll.magnitude;
+				if (hit.gameObject.tag == "BadMouse") {
+					ms = moveState.LOCKED;
+					lockedMouse = hit.gameObject;
+					StartCoroutine (lockOnToMouse (lockedMouse.transform.position, lockedMouse));
+					break;
+				} else if (hit.gameObject.tag == "Catnip" && ms != moveState.LOCKED && magcoll <= 35.0f) {
+					ms = moveState.LEAPING;
+					StartCoroutine (leapToCatnip (hit.gameObject.transform.position, 0.6f));
+					break;
+				}
 			}
 		}
 		//Press 'R' to restart the current level.
@@ -135,6 +144,7 @@ public class PlayerMovement : MonoBehaviour {
 		if (go.activeInHierarchy) {
 			transform.position = Vector3.MoveTowards (transform.position, dest, Time.deltaTime * 5);
 		} else {
+			lockedMouse = null;
 			mo.enabled = false;
 			yield return new WaitForSeconds (1);
 			ms = moveState.STOPPED;
