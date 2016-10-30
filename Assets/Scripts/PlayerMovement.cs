@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public enum moveState{
 	STOPPED,
@@ -88,7 +89,16 @@ public class PlayerMovement : MonoBehaviour {
 				StartCoroutine (leapToCatnip (hit.gameObject.transform.position, 0.6f));
 			}
 		}
-
+		//Press 'R' to restart the current level.
+		if(Input.GetKeyDown (KeyCode.R)){
+			SceneManager.LoadScene (SceneManager.GetActiveScene ().buildIndex);
+		}
+		if (Input.GetKeyDown (KeyCode.M)) {
+			SceneManager.LoadScene ("TitleScreen");
+		}
+		if(Input.GetKeyDown (KeyCode.S)){
+			SceneManager.LoadScene (SceneManager.GetActiveScene ().buildIndex + 1);
+		}
 	}
 
 	IEnumerator leapToCatnip(Vector3 dest, float time){

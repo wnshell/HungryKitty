@@ -32,7 +32,9 @@ public class BadMouse : MonoBehaviour {
 		float z = Mathf.Sin (timecounter)  * height;
 		float y = 0;
 
-		transform.position = new Vector3 (x + startpos.x, y + startpos.y, z + startpos.z);
+		Vector3 target = new Vector3 (x + startpos.x, y + startpos.y, z + startpos.z);
+		transform.position = target;
+
 	}
 
 	void OnTriggerEnter(Collider other){
@@ -49,7 +51,6 @@ public class BadMouse : MonoBehaviour {
 	void OnMouseOver(){
 		if (Input.GetMouseButtonDown(1)){
 			GameObject go = Instantiate (pop, transform.position,Quaternion.Euler(0, 0, 0)) as GameObject;
-
 			this.gameObject.SetActive(false);
 		}
 	}
