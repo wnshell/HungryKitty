@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public enum moveState{
 	STOPPED,
@@ -21,7 +22,10 @@ public class PlayerMovement : MonoBehaviour {
 	public float hopHeight = 1.25f;
 	private bool hopping = false;
 
+	public Text nipCount;
+
 	public bool catnipDown;
+	public bool yarnDown;
 
 
 	public GameObject catnip;
@@ -32,29 +36,46 @@ public class PlayerMovement : MonoBehaviour {
 		target = transform.position;
 		ms = moveState.STOPPED;
 		catnipDown = false;
+		yarnDown = false;
 		canDropNip = false;
+		nipCount = GameObject.Find ("NipCount").GetComponent<Text> ();
 	}
 
 	void Update () {
-		target = Camera.main.ScreenToWorldPoint (Input.mousePosition);
-		target.y = 3.0f;
-		Vector3 diff = target - transform.position;
-		//Rotates toward the mouse
-		float mag = diff.magnitude;
-		if (mag <= 5.0f) {
-			ms = moveState.STOPPED;
-		}
-		if (mag < threshold && ms == moveState.STOPPED) {
-			mag = 0.0f;
-		} else if (mag > threshold && ms == moveState.STOPPED) {
-			ms = moveState.MOVING;
-		}
-		if (mag < minspeed && ms == moveState.MOVING) {
-			mag = minspeed;
-		} else if (mag > maxspeed && ms == moveState.MOVING) {
-			mag = maxspeed;
-		}
+		GameObject yarn = GameObject.Find ("Yarn(Clone)");
+		//yarn movement
+		if (yarn != null) {
+			target = yarn.transform.position;
+			target.y = 3.0f;
+			Vector3 diff = target - transform.position;
+			//Rotates toward the mouse
+			float mag = diff.magnitude;
+			if (mag > 0.0f && ms == moveState.STOPPED) {
+				ms = moveState.MOVING;
+			}
+			if (mag < minspeed && ms == moveState.MOVING) {
+				mag = minspeed;
+			} else if (mag > maxspeed && ms == moveState.MOVING) {
+				mag = maxspeed;
+			}
+			if (ms == moveState.MOVING) {
+				GetComponent<Rigidbody> ().transform.eulerAngles = new Vector3 (0, Mathf.Atan2 ((target.x - transform.position.x), (target.z - transform.position.z)) * Mathf.Rad2Deg, 0);
+				transform.position = Vector3.MoveTowards (transform.position, target, speed * Time.deltaTime * mag);
+			}
 
+		}
+		//catnip dropping
+		int numCatNip = int.Parse(nipCount.text);
+		if (Input.GetKeyDown (KeyCode.Space) && !catnipDown && ms != moveState.LOCKED && canDropNip && numCatNip > 0) {
+			numCatNip--;
+			nipCount.text = numCatNip.ToString ();
+			GameObject go;
+			Vector3 target2 = Camera.main.ScreenToWorldPoint (Input.mousePosition);
+			target2.y = 3.0f;
+			go = Instantiate (catnip, target2, Quaternion.Euler (0, 0, 0)) as GameObject;
+			catnipDown = true;
+		}
+		//catnip or badmouse detection
 		Collider[] colliders = Physics.OverlapSphere (transform.position, detectionradius);
 		foreach (Collider hit in colliders) {
 			Vector3 diffcoll = hit.transform.position - transform.position;
@@ -62,22 +83,10 @@ public class PlayerMovement : MonoBehaviour {
 			if (hit.gameObject.tag == "BadMouse") {
 				ms = moveState.LOCKED;
 				StartCoroutine (lockOnToMouse (hit.gameObject.transform.position, hit.gameObject));
-			}
-			else if (hit.gameObject.tag == "Catnip" && ms != moveState.LOCKED && magcoll <= 35.0f) {
+			} else if (hit.gameObject.tag == "Catnip" && ms != moveState.LOCKED && magcoll <= 35.0f) {
 				ms = moveState.LEAPING;
 				StartCoroutine (leapToCatnip (hit.gameObject.transform.position, 0.6f));
 			}
-		}
-
-		if (ms == moveState.MOVING) {
-			GetComponent<Rigidbody>().transform.eulerAngles = new Vector3(0,Mathf.Atan2((target.x - transform.position.x), (target.z - transform.position.z))*Mathf.Rad2Deg, 0);
-			transform.position = Vector3.MoveTowards (transform.position, target, speed * Time.deltaTime * mag);
-		}
-
-		if (Input.GetKeyDown (KeyCode.Space) && mag >= threshold && !catnipDown && ms != moveState.LOCKED && canDropNip) {
-			GameObject go;
-			go = Instantiate(catnip, target, Quaternion.Euler(0, 0, 0)) as GameObject;
-			catnipDown = true;
 		}
 
 	}

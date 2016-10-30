@@ -18,6 +18,8 @@ public class Enemy : MonoBehaviour {
 	private Vector3 target;
 	public GameObject pop;
 
+	public GameObject deathScreen;
+
 
 	// Use this for initialization
 	void Start () {
@@ -50,6 +52,7 @@ public class Enemy : MonoBehaviour {
 		if (coll.gameObject.tag == "Cat") {
 			coll.gameObject.SetActive (false);
 			GameObject go = Instantiate (pop, coll.gameObject.transform.position,Quaternion.Euler(0, 0, 0)) as GameObject;
+			GameObject go2 = Instantiate (deathScreen, coll.gameObject.transform.position,Quaternion.Euler(0, 0, 0)) as GameObject;
 			StartCoroutine (Die ());
 		}
 	}

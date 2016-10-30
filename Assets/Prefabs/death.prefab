@@ -460,6 +460,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pop: {fileID: 100000, guid: 8e1dcf1924b1945fcaab73df0affd2ab, type: 2}
+  deathScreen: {fileID: 1000013186233478, guid: 722e23d2126a24655a152acc339e15d2,
+    type: 2}
 --- !u!198 &198000010121781574
 ParticleSystem:
   m_ObjectHideFlags: 1

@@ -12,6 +12,7 @@ public class BadMouse : MonoBehaviour {
 	public float height;
 
 	public GameObject pop;
+	public GameObject deathScreen;
 
 	float timecounter = 0.0f;
 
@@ -38,6 +39,7 @@ public class BadMouse : MonoBehaviour {
 		if (other.gameObject.tag == "Cat") {
 			other.gameObject.SetActive (false);
 			GameObject go = Instantiate (pop, other.gameObject.transform.position,Quaternion.Euler(0, 0, 0)) as GameObject;
+			GameObject go2 = Instantiate (deathScreen, other.gameObject.transform.position,Quaternion.Euler(0, 0, 0)) as GameObject;
 			StartCoroutine (Die ());
 
 
@@ -45,8 +47,9 @@ public class BadMouse : MonoBehaviour {
 	}
 
 	void OnMouseOver(){
-		if (Input.GetMouseButtonDown(0)){
+		if (Input.GetMouseButtonDown(1)){
 			GameObject go = Instantiate (pop, transform.position,Quaternion.Euler(0, 0, 0)) as GameObject;
+
 			this.gameObject.SetActive(false);
 		}
 	}
