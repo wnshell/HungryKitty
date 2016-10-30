@@ -16,6 +16,8 @@ public class Enemy : MonoBehaviour {
 	public Transform point2;
 
 	private Vector3 target;
+	public GameObject pop;
+
 
 	// Use this for initialization
 	void Start () {
@@ -24,8 +26,9 @@ public class Enemy : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		Vector3 diff1 = transform.position - point1.position;
-		Vector3 diff2 = transform.position - point2.position;
+
+	Vector3 diff1 = transform.position - point1.position;
+	Vector3 diff2 = transform.position - point2.position;
 
 
 	if(diff1.magnitude <= 0.1f){
@@ -38,12 +41,20 @@ public class Enemy : MonoBehaviour {
 	}
 
 		transform.position = Vector3.MoveTowards (transform.position, target, speed * Time.deltaTime);
+		transform.LookAt (target);
+		transform.rotation *= Quaternion.Euler(0, -90,0);
 
 	}
 
 	void OnTriggerEnter(Collider coll){
 		if (coll.gameObject.tag == "Cat") {
-			SceneManager.LoadScene (SceneManager.GetActiveScene ().buildIndex);
+			coll.gameObject.SetActive (false);
+			GameObject go = Instantiate (pop, coll.gameObject.transform.position,Quaternion.Euler(0, 0, 0)) as GameObject;
+			StartCoroutine (Die ());
 		}
+	}
+	IEnumerator Die(){
+		yield return new WaitForSeconds (3);
+		SceneManager.LoadScene (SceneManager.GetActiveScene ().buildIndex);
 	}
 }

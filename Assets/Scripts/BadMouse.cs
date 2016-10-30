@@ -1,13 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
+
 
 public class BadMouse : MonoBehaviour {
 
 	private Vector3 startpos;
 
-	float speed;
-	float width;
-	float height;
+	public float speed;
+	public float width;
+	public float height;
 
 	public GameObject pop;
 
@@ -34,7 +36,11 @@ public class BadMouse : MonoBehaviour {
 
 	void OnTriggerEnter(Collider other){
 		if (other.gameObject.tag == "Cat") {
-			this.gameObject.SetActive (false);
+			other.gameObject.SetActive (false);
+			GameObject go = Instantiate (pop, other.gameObject.transform.position,Quaternion.Euler(0, 0, 0)) as GameObject;
+			StartCoroutine (Die ());
+
+
 		}
 	}
 
@@ -43,5 +49,10 @@ public class BadMouse : MonoBehaviour {
 			GameObject go = Instantiate (pop, transform.position,Quaternion.Euler(0, 0, 0)) as GameObject;
 			this.gameObject.SetActive(false);
 		}
+	}
+
+	IEnumerator Die(){
+		yield return new WaitForSeconds (3);
+		SceneManager.LoadScene (SceneManager.GetActiveScene ().buildIndex);
 	}
 }

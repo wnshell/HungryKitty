@@ -10,6 +10,7 @@ public enum moveState{
 
 public class PlayerMovement : MonoBehaviour {
 
+	public bool canDropNip;
 	public moveState ms;
 	public float speed;
 	public float minspeed;
@@ -31,6 +32,7 @@ public class PlayerMovement : MonoBehaviour {
 		target = transform.position;
 		ms = moveState.STOPPED;
 		catnipDown = false;
+		canDropNip = false;
 	}
 
 	void Update () {
@@ -46,7 +48,8 @@ public class PlayerMovement : MonoBehaviour {
 			mag = 0.0f;
 		} else if (mag > threshold && ms == moveState.STOPPED) {
 			ms = moveState.MOVING;
-		} else if (mag < minspeed && ms == moveState.MOVING) {
+		}
+		if (mag < minspeed && ms == moveState.MOVING) {
 			mag = minspeed;
 		} else if (mag > maxspeed && ms == moveState.MOVING) {
 			mag = maxspeed;
@@ -67,11 +70,11 @@ public class PlayerMovement : MonoBehaviour {
 		}
 
 		if (ms == moveState.MOVING) {
-			GetComponent<Rigidbody>().transform.eulerAngles = new Vector3(0,Mathf.Atan2((target.x - transform.position.x), (target.z - transform.position.z))*Mathf.Rad2Deg - 90, 0);
+			GetComponent<Rigidbody>().transform.eulerAngles = new Vector3(0,Mathf.Atan2((target.x - transform.position.x), (target.z - transform.position.z))*Mathf.Rad2Deg, 0);
 			transform.position = Vector3.MoveTowards (transform.position, target, speed * Time.deltaTime * mag);
 		}
 
-		if (Input.GetKeyDown (KeyCode.Space) && mag >= threshold && !catnipDown && ms != moveState.LOCKED) {
+		if (Input.GetKeyDown (KeyCode.Space) && mag >= threshold && !catnipDown && ms != moveState.LOCKED && canDropNip) {
 			GameObject go;
 			go = Instantiate(catnip, target, Quaternion.Euler(0, 0, 0)) as GameObject;
 			catnipDown = true;
@@ -82,7 +85,7 @@ public class PlayerMovement : MonoBehaviour {
 	IEnumerator leapToCatnip(Vector3 dest, float time){
 		MeshRenderer mo = GameObject.Find ("!").GetComponent<MeshRenderer>();
 		mo.enabled = true;	
-		GetComponent<Rigidbody>().transform.eulerAngles = new Vector3(0,Mathf.Atan2((dest.x - transform.position.x), (dest.z - transform.position.z))*Mathf.Rad2Deg - 90, 0);
+		GetComponent<Rigidbody>().transform.eulerAngles = new Vector3(0,Mathf.Atan2((dest.x - transform.position.x), (dest.z - transform.position.z))*Mathf.Rad2Deg, 0);
 
 		yield return new WaitForSeconds (1);
 		if (hopping) yield break;
@@ -100,7 +103,6 @@ public class PlayerMovement : MonoBehaviour {
 		}
 		hopping = false;
 		ms = moveState.STOPPED;
-		catnipDown = false;
 		mo.enabled = false;
 
 	}
@@ -108,11 +110,11 @@ public class PlayerMovement : MonoBehaviour {
 	IEnumerator lockOnToMouse (Vector3 dest, GameObject go){
 		MeshRenderer mo = GameObject.Find ("!").GetComponent<MeshRenderer>();
 		mo.enabled = true;	
-		GetComponent<Rigidbody>().transform.eulerAngles = new Vector3(0,Mathf.Atan2((dest.x - transform.position.x), (dest.z - transform.position.z))*Mathf.Rad2Deg - 90, 0);
+		GetComponent<Rigidbody>().transform.eulerAngles = new Vector3(0,Mathf.Atan2((dest.x - transform.position.x), (dest.z - transform.position.z))*Mathf.Rad2Deg, 0);
 
 		yield return new WaitForSeconds (1);
 		if (go.activeInHierarchy) {
-			transform.position = Vector3.MoveTowards (transform.position, dest, speed * Time.deltaTime * 5);
+			transform.position = Vector3.MoveTowards (transform.position, dest, Time.deltaTime * 5);
 		} else {
 			mo.enabled = false;
 			yield return new WaitForSeconds (1);

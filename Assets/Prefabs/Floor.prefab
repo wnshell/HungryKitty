@@ -23,6 +23,7 @@ GameObject:
   - 65: {fileID: 65000014029103908}
   - 23: {fileID: 23000010011019476}
   - 54: {fileID: 54000010057001402}
+  - 114: {fileID: 114000012277381814}
   m_Layer: 9
   m_Name: Floor
   m_TagString: Untagged
@@ -104,5 +105,17 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
+  m_Size: {x: 0.9, y: 1, z: 0.9}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &114000012277381814
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000013021420692}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79091495e6ddc49e28e94959dc69a9df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  S: {fileID: 0}
