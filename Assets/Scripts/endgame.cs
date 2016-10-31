@@ -18,6 +18,8 @@ public class endgame : MonoBehaviour {
 	void OnTriggerEnter(Collider coll){
 		if (coll.gameObject.tag == "Cat") {
 			dog.SetActive (false);
+			AudioSource s = GameObject.Find ("Applause").GetComponent<AudioSource> ();
+			s.Play();
 			GameObject go = Instantiate (pop, dog.transform.position,Quaternion.Euler(0, 0, 0)) as GameObject;
 			GameObject go2 = Instantiate (endGame, coll.gameObject.transform.position,Quaternion.Euler(0, 0, 0)) as GameObject;
 			StartCoroutine (Die ());

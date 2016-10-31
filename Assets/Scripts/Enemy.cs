@@ -56,8 +56,11 @@ public class Enemy : MonoBehaviour {
 		if (coll.gameObject.tag == "Cat") {
 			coll.gameObject.SetActive (false);
 			GameObject go = Instantiate (pop, coll.gameObject.transform.position,Quaternion.Euler(0, 0, 0)) as GameObject;
+			AudioSource s = GameObject.Find ("CatDie").GetComponent<AudioSource> ();
+			s.Play();
 			GameObject go2 = Instantiate (deathScreen, coll.gameObject.transform.position,Quaternion.Euler(0, 0, 0)) as GameObject;
 			StartCoroutine (Die ());
+
 		}
 	}
 	IEnumerator Die(){

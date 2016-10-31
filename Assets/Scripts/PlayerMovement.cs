@@ -70,6 +70,8 @@ public class PlayerMovement : MonoBehaviour {
 		//catnip dropping
 		int numCatNip = int.Parse(nipCount.text);
 		if (Input.GetKeyDown (KeyCode.Space) && !catnipDown && ms != moveState.LOCKED && canDropNip && numCatNip > 0) {
+			AudioSource s = GameObject.Find ("purring").GetComponent<AudioSource> ();
+			s.Play();
 			numCatNip--;
 			nipCount.text = numCatNip.ToString ();
 			GameObject go;
@@ -116,11 +118,14 @@ public class PlayerMovement : MonoBehaviour {
 		GetComponent<Rigidbody>().transform.eulerAngles = new Vector3(0,Mathf.Atan2((dest.x - transform.position.x), (dest.z - transform.position.z))*Mathf.Rad2Deg, 0);
 
 		yield return new WaitForSeconds (1);
+
 		if (hopping) yield break;
 
 		hopping = true;
 		var startPos = transform.position;
 		var timer = 0.0f;
+		AudioSource s = GameObject.Find ("Jump").GetComponent<AudioSource> ();
+		s.Play();
 
 		while (timer <= 1.0f) {
 			var height = Mathf.Sin(Mathf.PI * timer) * hopHeight;

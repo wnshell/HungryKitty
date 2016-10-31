@@ -40,6 +40,8 @@ public class BadMouse : MonoBehaviour {
 	void OnTriggerEnter(Collider other){
 		if (other.gameObject.tag == "Cat") {
 			other.gameObject.SetActive (false);
+			AudioSource s = GameObject.Find ("CatDie").GetComponent<AudioSource> ();
+			s.Play();
 			GameObject go = Instantiate (pop, other.gameObject.transform.position,Quaternion.Euler(0, 0, 0)) as GameObject;
 			GameObject go2 = Instantiate (deathScreen, other.gameObject.transform.position,Quaternion.Euler(0, 0, 0)) as GameObject;
 			StartCoroutine (Die ());
@@ -50,6 +52,8 @@ public class BadMouse : MonoBehaviour {
 
 	void OnMouseOver(){
 		if (Input.GetMouseButtonDown(1)){
+			AudioSource s = GameObject.Find ("Squish").GetComponent<AudioSource> ();
+			s.Play();
 			GameObject go = Instantiate (pop, transform.position,Quaternion.Euler(0, 0, 0)) as GameObject;
 			this.gameObject.SetActive(false);
 		}

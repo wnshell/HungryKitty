@@ -12,6 +12,8 @@ public class pit : MonoBehaviour {
 	void OnTriggerEnter(Collider coll){
 		if (coll.gameObject.tag == "Cat") {
 			coll.gameObject.SetActive (false);
+			AudioSource s = GameObject.Find ("CatDie").GetComponent<AudioSource> ();
+			s.Play();
 			GameObject go2 = Instantiate (deathScreen, coll.gameObject.transform.position,Quaternion.Euler(0, 0, 0)) as GameObject;
 			GameObject go = Instantiate (pop, coll.gameObject.transform.position,Quaternion.Euler(0, 0, 0)) as GameObject;
 			StartCoroutine (Die ());

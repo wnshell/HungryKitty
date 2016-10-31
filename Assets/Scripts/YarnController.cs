@@ -18,6 +18,8 @@ public class YarnController : MonoBehaviour {
 		GameObject go;
 		go = GameObject.Find ("Yarn(Clone)");
 		if (Input.GetMouseButtonDown (0) && S.yarnDown == false && S.canDropNip == true) {
+			AudioSource s = GameObject.Find ("purring").GetComponent<AudioSource> ();
+			s.Play();
 			go = Instantiate(yarnPrefab, target, Quaternion.Euler(0, 0, 0)) as GameObject;
 		}
 		if (Input.GetMouseButton (0) && S.yarnDown == false && S.canDropNip == true) {
