@@ -15,7 +15,7 @@ public class Enemy : MonoBehaviour {
 	public Transform point1;
 	public Transform point2;
 
-	private Vector3 target;
+	public Vector3 target;
 	public GameObject pop;
 
 	public GameObject deathScreen;
@@ -23,7 +23,11 @@ public class Enemy : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		target = point1.position;
+		if (es == enemyState.LEFT) {
+			target = point1.position;
+		} else if (es == enemyState.RIGHT) {
+			target = point2.position;
+		}
 	}
 	
 	// Update is called once per frame

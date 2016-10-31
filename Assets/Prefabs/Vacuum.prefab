@@ -42,7 +42,7 @@ GameObject:
   - 114: {fileID: 114000010808479460}
   - 54: {fileID: 54000013826871766}
   m_Layer: 0
-  m_Name: Enemy
+  m_Name: Vacuum
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -163,7 +163,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000011090327708}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 3.1, z: -24.8}
+  m_LocalPosition: {x: 139.27864, y: 3, z: -39.2}
   m_LocalScale: {x: 15, y: 3, z: 15}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
@@ -389,10 +389,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20d3f0033ec57431cb3f7f46126d6b6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 20
+  speed: 5
   es: 0
   point1: {fileID: 0}
   point2: {fileID: 0}
+  target: {x: 0, y: 0, z: 0}
   pop: {fileID: 100000, guid: 8e1dcf1924b1945fcaab73df0affd2ab, type: 2}
   deathScreen: {fileID: 1000013186233478, guid: 722e23d2126a24655a152acc339e15d2,
     type: 2}
@@ -417,7 +418,7 @@ CapsuleCollider:
   m_GameObject: {fileID: 1000014038957740}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   m_Radius: 0.5
   m_Height: 2
   m_Direction: 1
@@ -430,7 +431,7 @@ CapsuleCollider:
   m_GameObject: {fileID: 1000011813704504}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   m_Radius: 0.5
   m_Height: 2
   m_Direction: 1
